@@ -162,16 +162,53 @@
         }
 
         @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 5px 0;
+            }
+
+            nav ul li a {
+                font-size: 14px;
+                padding: 5px 10px;
+            }
+
             h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .subtitle {
-                font-size: 1.2rem;
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 0 10px;
             }
 
             .grid {
                 grid-template-columns: 1fr;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul li a {
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -305,7 +342,7 @@
     </main>
 
     <footer>
-        <p>&copy; © 2024 Chtholy. All rights reserved.</p>
+        <p>&copy; 2024 Chtholy. All rights reserved.</p>
     </footer>
 
     <script>
