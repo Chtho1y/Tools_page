@@ -841,6 +841,37 @@
             const submitButton = document.querySelector('.submit-comment');
             const commentsGrid = document.getElementById('commentsGrid');
 
+            // Load comments from localStorage
+            function loadComments() {
+                const savedComments = localStorage.getItem('siteComments');
+                if (savedComments) {
+                    const comments = JSON.parse(savedComments);
+                    comments.forEach(comment => {
+                        const commentElement = createCommentElement(comment.text, comment.image, comment.author, comment.date);
+                        commentsGrid.appendChild(commentElement);
+                    });
+                }
+            }
+
+            // Save comments to localStorage
+            function saveComment(text, imageSrc) {
+                const savedComments = localStorage.getItem('siteComments');
+                const comments = savedComments ? JSON.parse(savedComments) : [];
+
+                const newComment = {
+                    text: text,
+                    image: imageSrc,
+                    author: 'Anonymous User',
+                    date: new Date().toISOString(),
+                    id: Date.now()
+                };
+
+                comments.unshift(newComment); // Add new comment to the beginning
+                localStorage.setItem('siteComments', JSON.stringify(comments));
+
+                return newComment;
+            }
+
             // Preview image before upload
             imageInput.addEventListener('change', function (e) {
                 const file = e.target.files[0];
@@ -859,7 +890,8 @@
                 const commentText = commentTextarea.value.trim();
                 if (!commentText && !imagePreview.src) return;
 
-                const comment = createCommentElement(commentText, imagePreview.src);
+                const savedComment = saveComment(commentText, imagePreview.src);
+                const comment = createCommentElement(savedComment.text, savedComment.image, savedComment.author, savedComment.date);
                 commentsGrid.insertBefore(comment, commentsGrid.firstChild);
 
                 // Reset form
@@ -870,7 +902,7 @@
             });
 
             // Create comment element
-            function createCommentElement(text, imageSrc) {
+            function createCommentElement(text, imageSrc, author = 'Anonymous User', dateStr = new Date().toISOString()) {
                 const comment = document.createElement('div');
                 comment.className = 'comment-card';
 
@@ -879,20 +911,22 @@
 
                 const avatar = document.createElement('div');
                 avatar.className = 'comment-avatar';
-                avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random()}" alt="Avatar">`;
+                // Use consistent avatar for same user based on date
+                const avatarSeed = dateStr.split('T')[0];
+                avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" alt="Avatar">`;
 
                 const meta = document.createElement('div');
                 meta.className = 'comment-meta';
 
-                const author = document.createElement('p');
-                author.className = 'comment-author';
-                author.textContent = 'Anonymous User';
+                const authorElem = document.createElement('p');
+                authorElem.className = 'comment-author';
+                authorElem.textContent = author;
 
                 const date = document.createElement('span');
                 date.className = 'comment-date';
-                date.textContent = new Date().toLocaleDateString();
+                date.textContent = new Date(dateStr).toLocaleDateString();
 
-                meta.appendChild(author);
+                meta.appendChild(authorElem);
                 meta.appendChild(date);
 
                 header.appendChild(avatar);
@@ -918,17 +952,24 @@
                 return comment;
             }
 
-            const sampleComments = [
-                {
-                    text: "Amazing work on the AGI projects! The future of AI looks promising.",
-                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format"
-                }
-            ];
+            // Initialize comments from localStorage
+            loadComments();
 
-            sampleComments.forEach(comment => {
-                const commentElement = createCommentElement(comment.text, comment.image);
-                commentsGrid.appendChild(commentElement);
-            });
+            // Add sample comments only if localStorage is empty
+            if (!localStorage.getItem('siteComments')) {
+                const sampleComments = [
+                    {
+                        text: "Amazing work on the AGI projects! The future of AI looks promising.",
+                        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format",
+                        date: new Date(Date.now() - 86400000).toISOString()
+                    }
+                ];
+
+                sampleComments.forEach(comment => {
+                    saveComment(comment.text, comment.image);
+                });
+                loadComments();
+            }
         });
 
         $(function () {
