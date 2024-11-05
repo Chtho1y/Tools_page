@@ -157,7 +157,43 @@
             margin-bottom: 15px;
         }
 
-        /* Comments Section Styles */
+        /* AI API Styles */
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .api-table th,
+        .api-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .api-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .api-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .api-table a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .api-table a:hover {
+            text-decoration: underline;
+        }
+
+        /* Comments Styles */
         #comments {
             background: var(--background-color);
             padding: 80px 0;
@@ -378,10 +414,7 @@
         <nav>
             <ul>
                 <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#ambitions">Ambitions</a></li>
-                <li><a href="#interests">Interests</a></li>
+                <li><a href="#projects">Api</a></li>
             </ul>
         </nav>
     </header>
@@ -396,106 +429,96 @@
             </div>
         </section>
 
-        <section id="about">
+        <section id="ai-api">
             <div class="container">
-                <h2>About Me</h2>
-                <div class="card">
-                    <p>👨I am Chtholy, an innovator, design hacker, programmer, and designer, as well as a member of ACM
-                        SIG. I serve as a Partner and CEO at WorldFlow Technology Limited, founded the Magiclab Infinite
-                        Unbounded Community, and initiated the AGIUnite organization. I studied Computer Science at
-                        Fudan University and am currently on a leave of absence to pursue entrepreneurial ventures. My
-                        work focuses on building advanced human-AI systems and exploring the future of AGI.
-                        Additionally, as an independent game developer, I specialize in applying cutting-edge
-                        technologies to interactive entertainment, creating deeply immersive user experiences.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects">
-            <div class="container">
-                <h2>Projects</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>A Chinese Colloquial Benchmark for LLM</h3>
-                    </div>
-                    <div class="card">
-                        <h3>Real-time Music Accompaniment Generation</h3>
-                    </div>
-                    <div class="card">
-                        <h3>GLSLs Cel Shader for ACG-style Rendering</h3>
-                    </div>
-                    <div class="card">
-                        <h3>XEngine Unity Runtime Framework</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="experience">
-            <div class="container">
-                <h2>Industry Experience</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>Real Estate</h3>
-                    </div>
-                    <div class="card">
-                        <h3>Finance</h3>
-                    </div>
-                    <div class="card">
-                        <h3>Internet</h3>
-                    </div>
-                    <div class="card">
-                        <h3>Education</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="ambitions">
-            <div class="container">
-                <h2>Ambitions</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>Mix Universe Open Source Group</h3>
-                    </div>
-                    <div class="card">
-                        <h3>AI Creativity - Design Hacker Exhibition</h3>
-                    </div>
-                    <div class="card">
-                        <h3>Building a Mechanical Dog</h3>
-                    </div>
-                    <div class="card">
-                        <h3>Creating cultural and creative products with code</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="interests">
-            <div class="container">
-                <h2>Topics of Interest</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>🌍 Open Source Organizations #AGIUI</h3>
-                    </div>
-                    <div class="card">
-                        <h3>🚀 Generative AI - AIGC</h3>
-                    </div>
-                    <div class="card">
-                        <h3>📦 Impromptu Design</h3>
-                    </div>
-                    <div class="card">
-                        <h3>🏠 Future Spaces</h3>
-                    </div>
-                    <div class="card">
-                        <h3>💧Cross-disciplinary Interviews</h3>
-                    </div>
-                    <div class="card">
-                        <h3>🚗 Metaverse</h3>
-                    </div>
-                </div>
-            </div>
+                <h2>Free AI API Collection</h2>
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Provider</th>
+                            <th>Context</th>
+                            <th>Input</th>
+                            <th>Output</th>
+                            <th>Remark</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Qwen/Qwen2-7B-Instruct</td>
+                            <td>siliconflow</td>
+                            <td>32K</td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>RPM:100,QPS:3</td>
+                            <td><a href="https://cloud.siliconflow.cn" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>Qwen/Qwen2-1.5B-Instruct</td>
+                            <td>siliconflow</td>
+                            <td>32K</td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>RPM:100,QPS:3</td>
+                            <td><a href="https://cloud.siliconflow.cn" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>THUDM/ChatGLM3-6b</td>
+                            <td>siliconflow</td>
+                            <td>32K</td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>RPM:100,QPS:3</td>
+                            <td><a href="https://cloud.siliconflow.cn" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>glm-4-flash</td>
+                            <td>智谱</td>
+                            <td>16K</td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>Free access to glm-4-flash</td>
+                            <td><a href="https://open.bigmodel.cn" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>gemini 1.5 flash</td>
+                            <td>Google</td>
+                            <td></td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>15 RPM，100万个 TPM，1500 RPD</td>
+                            <td><a href="https://ai.google.dev/pricing" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>Gemini 1.5 Pro</td>
+                            <td>Google</td>
+                            <td></td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>2 RPM,32,000TPM,50 RPD</td>
+                            <td><a href="https://ai.google.dev/pricing" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>LLaMA3 8b</td>
+                            <td>Groq</td>
+                            <td>8,192 tokens</td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>14400 RPD,18000 TPM</td>
+                            <td><a href="https://console.groq.com/" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>Mixtral 8x7b</td>
+                            <td>Groq</td>
+                            <td>32,768 tokens</td>
+                            <td>$Free</td>
+                            <td>$Free</td>
+                            <td>14400 RPD,18000 TPM</td>
+                            <td><a href="https://console.groq.com/" target="_blank">Link</a></td>
+                        </tr>
+                    </tbody>
+                </table>
         </section>
 
         <!-- Comments -->
@@ -866,7 +889,7 @@
                     id: Date.now()
                 };
 
-                comments.unshift(newComment); // Add new comment to the beginning
+                comments.unshift(newComment);
                 localStorage.setItem('siteComments', JSON.stringify(comments));
 
                 return newComment;
@@ -911,7 +934,7 @@
 
                 const avatar = document.createElement('div');
                 avatar.className = 'comment-avatar';
-                // Use consistent avatar for same user based on date
+
                 const avatarSeed = dateStr.split('T')[0];
                 avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" alt="Avatar">`;
 
@@ -951,11 +974,8 @@
 
                 return comment;
             }
-
-            // Initialize comments from localStorage
             loadComments();
 
-            // Add sample comments only if localStorage is empty
             if (!localStorage.getItem('siteComments')) {
                 const sampleComments = [
                     {
