@@ -13,6 +13,9 @@
             --secondary-color: #333;
             --accent-color: #0070c9;
             --background-color: #f5f5f7;
+            --comment-bg: #fff;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -154,6 +157,167 @@
             margin-bottom: 15px;
         }
 
+        /* Comments Section Styles */
+        #comments {
+            background: var(--background-color);
+            padding: 80px 0;
+        }
+
+        .comments-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .comment-form {
+            background: var(--comment-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            min-height: 100px;
+            transition: var(--transition);
+        }
+
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(0, 112, 201, 0.2);
+        }
+
+        .comment-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .image-upload {
+            position: relative;
+            display: inline-block;
+        }
+
+        .image-upload input[type="file"] {
+            display: none;
+        }
+
+        .image-upload label {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: #f5f5f7;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-upload label:hover {
+            background: #e5e5e7;
+        }
+
+        .image-upload label svg {
+            margin-right: 8px;
+        }
+
+        .submit-comment {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-comment:hover {
+            background: #005999;
+        }
+
+        .comments-grid {
+            column-count: 2;
+            column-gap: 30px;
+            margin-top: 40px;
+        }
+
+        .comment-card {
+            break-inside: avoid;
+            background: var(--comment-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .comment-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            background: #e1e1e1;
+            overflow: hidden;
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-meta {
+            flex-grow: 1;
+        }
+
+        .comment-author {
+            font-weight: 500;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .comment-date {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .comment-content {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .comment-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
         footer {
             background-color: var(--primary-color);
             color: #fff;
@@ -199,6 +363,10 @@
 
             .subtitle {
                 font-size: 1.2rem;
+            }
+
+            .comments-grid {
+                column-count: 1;
             }
         }
     </style>
@@ -329,12 +497,39 @@
                 </div>
             </div>
         </section>
+
+        <!-- Comments -->
+        <section id="comments">
+            <div class="comments-container">
+                <h2>Comments</h2>
+                <div class="comment-form">
+                    <textarea placeholder="Share your thoughts..."></textarea>
+                    <div class="comment-actions">
+                        <div class="image-upload">
+                            <input type="file" id="imageInput" accept="image/*">
+                            <label for="imageInput">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.51L14.5 12L19 18H5L8.5 13.5Z"
+                                        fill="#666" />
+                                </svg>
+                                Add Image
+                            </label>
+                        </div>
+                        <img id="imagePreview" class="preview-image" alt="Preview">
+                        <button class="submit-comment">Post Comment</button>
+                    </div>
+                </div>
+                <div class="comments-grid" id="commentsGrid">
+                    <!-- Comments will be dynamically added here -->
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2024 Chtholy. All rights reserved.</p>
-        <script type="text/javascript" id="clstr_globe"
-            src="//clustrmaps.com/globe.js?d=Prmv80S_XFvIQq5cCiCLdvfXSHJDUzmTSat_BQ1JNRc"></script>
     </footer>
 
     <script>
@@ -637,6 +832,104 @@
                 this.controlStatus(context);
             }
         };
+
+        // Comments System
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const commentTextarea = document.querySelector('.comment-form textarea');
+            const submitButton = document.querySelector('.submit-comment');
+            const commentsGrid = document.getElementById('commentsGrid');
+
+            // Preview image before upload
+            imageInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Handle comment submission
+            submitButton.addEventListener('click', function () {
+                const commentText = commentTextarea.value.trim();
+                if (!commentText && !imagePreview.src) return;
+
+                const comment = createCommentElement(commentText, imagePreview.src);
+                commentsGrid.insertBefore(comment, commentsGrid.firstChild);
+
+                // Reset form
+                commentTextarea.value = '';
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                imageInput.value = '';
+            });
+
+            // Create comment element
+            function createCommentElement(text, imageSrc) {
+                const comment = document.createElement('div');
+                comment.className = 'comment-card';
+
+                const header = document.createElement('div');
+                header.className = 'comment-header';
+
+                const avatar = document.createElement('div');
+                avatar.className = 'comment-avatar';
+                avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.random()}" alt="Avatar">`;
+
+                const meta = document.createElement('div');
+                meta.className = 'comment-meta';
+
+                const author = document.createElement('p');
+                author.className = 'comment-author';
+                author.textContent = 'Anonymous User';
+
+                const date = document.createElement('span');
+                date.className = 'comment-date';
+                date.textContent = new Date().toLocaleDateString();
+
+                meta.appendChild(author);
+                meta.appendChild(date);
+
+                header.appendChild(avatar);
+                header.appendChild(meta);
+
+                comment.appendChild(header);
+
+                if (text) {
+                    const content = document.createElement('div');
+                    content.className = 'comment-content';
+                    content.textContent = text;
+                    comment.appendChild(content);
+                }
+
+                if (imageSrc && imageSrc !== '') {
+                    const image = document.createElement('img');
+                    image.className = 'comment-image';
+                    image.src = imageSrc;
+                    image.alt = 'Comment image';
+                    comment.appendChild(image);
+                }
+
+                return comment;
+            }
+
+            const sampleComments = [
+                {
+                    text: "Amazing work on the AGI projects! The future of AI looks promising.",
+                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format"
+                }
+            ];
+
+            sampleComments.forEach(comment => {
+                const commentElement = createCommentElement(comment.text, comment.image);
+                commentsGrid.appendChild(commentElement);
+            });
+        });
 
         $(function () {
             RENDERER.init();
