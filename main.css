@@ -204,7 +204,7 @@ h1 {
 .tool-card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
-    padding: 25px;
+    padding: 20px;
     transition: var(--transition);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
