@@ -1,9 +1,11 @@
+// Fish Animation
 var RENDERER = {
     POINT_INTERVAL: 5,
     FISH_COUNT: 3,
     MAX_INTERVAL_COUNT: 50,
     INIT_HEIGHT_RATE: 0.5,
     THRESHOLD: 50,
+
     init: function () {
         this.setParameters();
         this.reconstructMethods();
@@ -80,7 +82,10 @@ var RENDERER = {
     },
     getAxis: function (event) {
         var offset = this.$container.offset();
-        return { x: event.clientX - offset.left + this.$window.scrollLeft(), y: event.clientY - offset.top + this.$window.scrollTop() };
+        return {
+            x: event.clientX - offset.left + this.$window.scrollLeft(),
+            y: event.clientY - offset.top + this.$window.scrollTop()
+        };
     },
     startEpicenter: function (event) {
         this.axis = this.getAxis(event);
@@ -121,7 +126,8 @@ var RENDERER = {
         requestAnimationFrame(this.render);
         this.controlStatus();
         this.context.clearRect(0, 0, this.width, this.height);
-        this.context.fillStyle = 'hsl(0, 0%, 92%)';
+        this.context.fillStyle = 'hsl(0, 0%, 95%)';
+
         for (var i = 0, count = this.fishes.length; i < count; i++) {
             this.fishes[i].render(this.context);
         }
@@ -129,6 +135,7 @@ var RENDERER = {
         this.context.globalCompositeOperation = 'xor';
         this.context.beginPath();
         this.context.moveTo(0, this.reverse ? 0 : this.height);
+
         for (var i = 0, count = this.points.length; i < count; i++) {
             this.points[i].render(this.context);
         }
@@ -150,6 +157,7 @@ SURFACE_POINT.prototype = {
     SPRING_FRICTION: 0.95,
     WAVE_SPREAD: 0.25,
     ACCELARATION_RATE: 0.002,
+
     init: function () {
         this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE;
         this.height = this.initHeight;
@@ -198,11 +206,13 @@ var FISH = function (renderer) {
 
 FISH.prototype = {
     GRAVITY: 0.3,
+
     init: function () {
         this.direction = Math.random() < 0.5;
         this.x = this.direction ? (this.renderer.width + this.renderer.THRESHOLD) : -this.renderer.THRESHOLD;
         this.previousY = this.y;
         this.vx = this.getRandomValue(2, 8) * (this.direction ? -1 : 1);
+
         if (this.renderer.reverse) {
             this.y = this.getRandomValue(this.renderer.height * 1 / 10, this.renderer.height * 4 / 10);
             this.vy = this.getRandomValue(1, 4);
@@ -224,6 +234,7 @@ FISH.prototype = {
         this.x += this.vx;
         this.y += this.vy;
         this.vy += this.ay;
+
         if (this.renderer.reverse) {
             if (this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE) {
                 this.vy -= this.GRAVITY;
@@ -266,6 +277,7 @@ FISH.prototype = {
         context.bezierCurveTo(-20, 15, 15, 10, 40, 0);
         context.bezierCurveTo(15, -10, -20, -15, -30, 0);
         context.fill();
+
         context.save();
         context.translate(40, 0);
         context.scale(0.9 + 0.2 * Math.sin(this.theta), 1);
@@ -277,10 +289,12 @@ FISH.prototype = {
         context.quadraticCurveTo(5, -10, 0, 0);
         context.fill();
         context.restore();
+
         context.save();
         context.translate(-3, 0);
         context.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1));
         context.beginPath();
+
         if (this.renderer.reverse) {
             context.moveTo(5, 0);
             context.bezierCurveTo(10, 10, 10, 30, 0, 40);
@@ -298,15 +312,60 @@ FISH.prototype = {
     }
 };
 
-// Comments System
+// Tool Filtering System
 document.addEventListener('DOMContentLoaded', function () {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const toolCards = document.querySelectorAll('.tool-card');
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Tool filtering
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            const filter = button.getAttribute('data-filter');
+
+            toolCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+    });
+
+    // Comments System
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
     const commentTextarea = document.querySelector('.comment-form textarea');
     const submitButton = document.querySelector('.submit-comment');
     const commentsGrid = document.getElementById('commentsGrid');
 
-    // Load comments from localStorage
     function loadComments() {
         const savedComments = localStorage.getItem('siteComments');
         if (savedComments) {
@@ -318,7 +377,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Save comments to localStorage
     function saveComment(text, imageSrc) {
         const savedComments = localStorage.getItem('siteComments');
         const comments = savedComments ? JSON.parse(savedComments) : [];
@@ -337,7 +395,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return newComment;
     }
 
-    // Preview image before upload
     imageInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
@@ -350,7 +407,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Handle comment submission
     submitButton.addEventListener('click', function () {
         const commentText = commentTextarea.value.trim();
         if (!commentText && !imagePreview.src) return;
@@ -366,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function () {
         imageInput.value = '';
     });
 
-    // Create comment element
     function createCommentElement(text, imageSrc, author = 'Anonymous User', dateStr = new Date().toISOString()) {
         const comment = document.createElement('div');
         comment.className = 'comment-card';
@@ -376,7 +431,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const avatar = document.createElement('div');
         avatar.className = 'comment-avatar';
-
         const avatarSeed = dateStr.split('T')[0];
         avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" alt="Avatar">`;
 
@@ -393,10 +447,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         meta.appendChild(authorElem);
         meta.appendChild(date);
-
         header.appendChild(avatar);
         header.appendChild(meta);
-
         comment.appendChild(header);
 
         if (text) {
@@ -416,13 +468,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return comment;
     }
-    loadComments();
 
+    // Initialize comments
     if (!localStorage.getItem('siteComments')) {
         const sampleComments = [
             {
-                text: "Love what you've done here! Seriously, I could totally see these vibes fitting perfectly in an RPG game. Hit me up if you’re interested in a collab!",
-                image: "https://pic.imgdb.cn/item/6729b8eed29ded1a8c86d87d.png",
+                text: "Congrats on the launch. It's great to see how much NexusAI evolved in the past few months.You guys are really onto something. 🚀",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/DeepMind_new_logo.svg/375px-DeepMind_new_logo.svg.png",
                 date: new Date(Date.now() - 86400000).toISOString()
             }
         ];
@@ -430,8 +482,8 @@ document.addEventListener('DOMContentLoaded', function () {
         sampleComments.forEach(comment => {
             saveComment(comment.text, comment.image);
         });
-        loadComments();
     }
+    loadComments();
 });
 
 $(function () {
