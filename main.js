@@ -1,7 +1,7 @@
 // Fish Animation
 var RENDERER = {
     POINT_INTERVAL: 5,
-    FISH_COUNT: 3,
+    FISH_COUNT: 13,
     MAX_INTERVAL_COUNT: 50,
     INIT_HEIGHT_RATE: 0.5,
     THRESHOLD: 50,
@@ -48,7 +48,8 @@ var RENDERER = {
         this.intervalCount = this.MAX_INTERVAL_COUNT;
         this.width = this.$container.width();
         this.height = this.$container.height();
-        this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500;
+        this.fishCount = this.FISH_COUNT;
+        // * this.width / 500 * this.height / 500
         this.$canvas.attr({ width: this.width, height: this.height });
         this.reverse = false;
         this.fishes.push(new FISH(this));
@@ -126,7 +127,7 @@ var RENDERER = {
         requestAnimationFrame(this.render);
         this.controlStatus();
         this.context.clearRect(0, 0, this.width, this.height);
-        this.context.fillStyle = 'hsl(0, 0%, 95%)';
+        this.context.fillStyle = 'hsl(0, 0%, 92%)';
 
         for (var i = 0, count = this.fishes.length; i < count; i++) {
             this.fishes[i].render(this.context);
