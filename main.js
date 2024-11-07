@@ -361,40 +361,69 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Comments System
-    const imageInput = document.getElementById('imageInput');
-    const imagePreview = document.getElementById('imagePreview');
+    const API_URL = 'http://47.236.62.225:7805/comments';
+    const commentsGrid = document.getElementById('commentsGrid');
     const commentTextarea = document.querySelector('.comment-form textarea');
     const submitButton = document.querySelector('.submit-comment');
-    const commentsGrid = document.getElementById('commentsGrid');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
 
-    function loadComments() {
-        const savedComments = localStorage.getItem('siteComments');
-        if (savedComments) {
-            const comments = JSON.parse(savedComments);
+    // 从后端获取评论
+    async function loadComments() {
+        try {
+            const response = await fetch(API_URL);
+            const comments = await response.json();
+            commentsGrid.innerHTML = ''; // 清空之前的内容
             comments.forEach(comment => {
                 const commentElement = createCommentElement(comment.text, comment.image, comment.author, comment.date);
                 commentsGrid.appendChild(commentElement);
             });
+        } catch (error) {
+            console.error('Error fetching comments:', error);
         }
     }
 
-    function saveComment(text, imageSrc) {
-        const savedComments = localStorage.getItem('siteComments');
-        const comments = savedComments ? JSON.parse(savedComments) : [];
+    // 提交评论到后端
+    async function postComment(commentData) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(commentData)
+            });
+            return response.json();
+        } catch (error) {
+            console.error('Error posting comment:', error);
+        }
+    }
+
+    submitButton.addEventListener('click', async function () {
+        const commentText = commentTextarea.value.trim();
+        const imageSrc = imagePreview.src || '';
+
+        if (!commentText && !imageSrc) return; // 如果没有文本或图片则不提交
 
         const newComment = {
-            text: text,
+            text: commentText,
             image: imageSrc,
-            author: 'Anonymous User',
-            date: new Date().toISOString(),
-            id: Date.now()
+            author: 'Anonymous User'
         };
 
-        comments.unshift(newComment);
-        localStorage.setItem('siteComments', JSON.stringify(comments));
+        const savedComment = await postComment(newComment);
+        const commentElement = createCommentElement(
+            savedComment.text,
+            savedComment.image,
+            savedComment.author,
+            savedComment.date
+        );
+        commentsGrid.insertBefore(commentElement, commentsGrid.firstChild);
 
-        return newComment;
-    }
+        // 重置表单
+        commentTextarea.value = '';
+        imagePreview.src = '';
+        imagePreview.style.display = 'none';
+        imageInput.value = '';
+    });
 
     imageInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
@@ -403,24 +432,9 @@ document.addEventListener('DOMContentLoaded', function () {
             reader.onload = function (e) {
                 imagePreview.src = e.target.result;
                 imagePreview.style.display = 'block';
-            }
+            };
             reader.readAsDataURL(file);
         }
-    });
-
-    submitButton.addEventListener('click', function () {
-        const commentText = commentTextarea.value.trim();
-        if (!commentText && !imagePreview.src) return;
-
-        const savedComment = saveComment(commentText, imagePreview.src);
-        const comment = createCommentElement(savedComment.text, savedComment.image, savedComment.author, savedComment.date);
-        commentsGrid.insertBefore(comment, commentsGrid.firstChild);
-
-        // Reset form
-        commentTextarea.value = '';
-        imagePreview.src = '';
-        imagePreview.style.display = 'none';
-        imageInput.value = '';
     });
 
     function createCommentElement(text, imageSrc, author = 'Anonymous User', dateStr = new Date().toISOString()) {
@@ -432,8 +446,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const avatar = document.createElement('div');
         avatar.className = 'comment-avatar';
-        const avatarSeed = dateStr.split('T')[0];
-        avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" alt="Avatar">`;
+        avatar.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${dateStr}" alt="Avatar">`;
 
         const meta = document.createElement('div');
         meta.className = 'comment-meta';
@@ -471,19 +484,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Initialize comments
-    if (!localStorage.getItem('siteComments')) {
-        const sampleComments = [
-            {
-                text: "Congrats on the launch. It's great to see how much NexusAI evolved in the past few months.You guys are really onto something. 🚀",
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/DeepMind_new_logo.svg/375px-DeepMind_new_logo.svg.png",
-                date: new Date(Date.now() - 86400000).toISOString()
-            }
-        ];
-
-        sampleComments.forEach(comment => {
-            saveComment(comment.text, comment.image);
-        });
-    }
     loadComments();
 });
 
