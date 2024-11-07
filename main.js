@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Comments System
-    const API_URL = 'https://47.236.62.225:7805/comments';
+    const API_URL = 'https://47.236.62.225/comments';
     const commentsGrid = document.getElementById('commentsGrid');
     const commentTextarea = document.querySelector('.comment-form textarea');
     const submitButton = document.querySelector('.submit-comment');
